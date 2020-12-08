@@ -1,6 +1,4 @@
-16.wav
-17.wav
-18.wav
-19.wav
-20.wav
 sample.wav
+sample1.wav
+sample2.wav
+sample3.wav
