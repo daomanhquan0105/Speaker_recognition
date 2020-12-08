@@ -11,8 +11,8 @@ DEVICE_INDEX = 0
 TRAIN_SET = 'training_set/'
 TEST_SET = 'testing_set/'
 TRAINED_MODELS = 'trained_models/'
-QUANTITY_TRAIN_FILE = 50
-QUANTITY_TEST_FILE = 20
+QUANTITY_TRAIN_FILE = 60
+QUANTITY_TEST_FILE = 15
 
 # text
 FILE_NAME_TRAIN = 'training_set_addition.txt'

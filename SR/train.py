@@ -9,7 +9,7 @@ from test import test_list_file
 
 def train_model(quantity_file=5, record=True):
     if record==True:
-        record_audio(quantity_file, c.RECORD_SECONDS,c.FILE_NAME_TRAIN,c.TRAIN_SET)
+        record_audio(quantity_file, c.RECORD_SECONDS, c.FILE_NAME_TRAIN, c.TRAIN_SET)
 
     print("Bắt đầu training")
     file_paths = open(c.FILE_NAME_TRAIN, 'r')
@@ -39,6 +39,6 @@ def train_model(quantity_file=5, record=True):
 
 
 if __name__=="__main__":
-    train_model(c.FILE_NAME_TRAIN)
+    train_model(c.QUANTITY_TRAIN_FILE)
     print("trained successfull!")
     test_list_file(c.QUANTITY_TEST_FILE, True)
