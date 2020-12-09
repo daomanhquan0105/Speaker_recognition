@@ -9,7 +9,7 @@ import pandas as pd
 from recordAudio import record_audio, record_one_file
 
 
-def test_list_file(quantity_file=2, record=False):
+def test_list_file(quantity_file, record=False):
     if record == True:
         record_audio(quantity_file, c.RECORD_SECONDS, c.FILE_NAME_TEST, c.TEST_SET, True)
 
@@ -37,7 +37,6 @@ def test_list_file(quantity_file=2, record=False):
 
         winner = np.argmax(log_likelihood)
         speaker = speakers[winner].split('/')[-1]
-        # print(f"{path} la {speaker} nói")
         new_data = [path, scores, speaker]
         new_df = pd.DataFrame([new_data], columns=cols)
         df_result = pd.concat([df_result, new_df], ignore_index=True)
@@ -45,7 +44,12 @@ def test_list_file(quantity_file=2, record=False):
     print("Sumit successfully!result to save dir res/result.csv")
 
 
-def test_one_file(file_name="testfile.wav"):
+
+def test_one_file(file_name):
+    """
+     :param file_name: Tên file lưu
+     :return: tên người nói
+    """
     file_path = record_one_file(file_name)
     print("bắt đầu kiểm tra")
     gmm_files = [os.path.join(c.TRAINED_MODELS, file_name) for file_name in os.listdir(c.TRAINED_MODELS)
@@ -70,3 +74,15 @@ def test_one_file(file_name="testfile.wav"):
     speaker = speakers[winner].split('/')[-1]
     time.sleep(1)
     print(f"{file_name} la {speaker} nói")
+
+#Main run test file
+if __name__ == '__main__':
+    while True:
+        choice = int(
+            input("\n 1.Test list files \n 2.Test 1 file \n "))
+        if (choice == 1):
+            test_list_file(12,True)
+        elif (choice == 2):
+            test_one_file("file-record-test.wav")
+        if (choice > 2):
+            exit()

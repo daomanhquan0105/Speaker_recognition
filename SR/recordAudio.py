@@ -14,9 +14,7 @@ def record_audio(Quantity_file, record_seconds, file_text, dir, test=False):
     :param test: default=False
     :return: void
     """
-    Name = "quan-sample"
-    if test == False:
-        Name = (input("Nhập tên của bạn: "))
+    Name = (input("Nhập tên của bạn: "))
 
     for count in range(Quantity_file):
         audio = pyaudio.PyAudio()
@@ -34,7 +32,7 @@ def record_audio(Quantity_file, record_seconds, file_text, dir, test=False):
         stream.close()
         audio.terminate()
         if test == True:
-            out_filename = Name + str(count) + '.wav'
+            out_filename = Name+"-test" + str(count) + '.wav'
         else:
             out_filename = Name + "-sample" + str(count) + '.wav'
 
@@ -60,7 +58,7 @@ def record_audio(Quantity_file, record_seconds, file_text, dir, test=False):
         time.sleep(5)
 
 
-def record_one_file(file_name="test_file.wav"):
+def record_one_file(file_name):
     audio = pyaudio.PyAudio()
     stream = audio.open(format=c.FORMAT, channels=c.CHANNELS,
                         rate=c.RATE, input=True, input_device_index=c.DEVICE_INDEX,

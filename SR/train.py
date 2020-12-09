@@ -8,7 +8,7 @@ from recordAudio import record_audio
 from test import test_list_file
 
 
-def train_model(quantity_file=5, record=True):
+def train_model(quantity_file, record=True):
     if record == True:
         record_audio(quantity_file, c.RECORD_SECONDS, c.FILE_NAME_TRAIN, c.TRAIN_SET)
 
