@@ -11,3 +11,6 @@ thanh-sample9.wav
 thanh-sample10.wav
 thanh-sample11.wav
 file-record-test.wav
+file-record-test.wav
+file-record-test.wav
+file-record-test.wav
