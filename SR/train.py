@@ -5,7 +5,7 @@ import numpy as np
 from scipy.io.wavfile import read
 from sklearn.mixture import GaussianMixture
 from recordAudio import record_audio
-from test import test_list_file
+# from test import test_list_file
 import os
 
 def train_model(quantity_file=5, record=True):
@@ -40,6 +40,9 @@ def train_model(quantity_file=5, record=True):
 
 
 def train_model_dir(quantity_file=5):
+    """
+    function train_model_dir
+    """
     print("Bắt đầu training")
     file_paths = open(c.FILE_NAME_TRAIN, 'r')
     features = np.asarray(())
@@ -69,6 +72,9 @@ def train_model_dir(quantity_file=5):
 
 
 def train_model_more_dir():
+    """
+    function train model
+    """
     print("Bắt đầu training")
     features = np.asarray(())
     count = 1

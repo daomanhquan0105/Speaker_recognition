@@ -74,7 +74,7 @@ def record_one_file(file_name="test_file.wav"):
     stream.stop_stream()
     stream.close()
     audio.terminate()
-    WAVE_OUTPUT_FILENAME = os.path.join(c.TEST_SET, file_name)
+    WAVE_OUTPUT_FILENAME = os.path.join('testing_set/testfile/', file_name)
     trainedfilelist = open(c.FILE_NAME_TEST, 'a')
     trainedfilelist.write(file_name + "\n")
     waveFile = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
