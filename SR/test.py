@@ -70,3 +70,36 @@ def test_one_file(file_name="testfile.wav"):
     speaker = speakers[winner].split('/')[-1]
     time.sleep(1)
     print(f"{file_name} la {speaker} nói")
+
+
+def test_list_file_from_dir():
+    print("Bắt đầu kiểm tra")
+    gmm_files = [os.path.join(c.TRAINED_MODELS, file_name) for file_name in os.listdir(c.TRAINED_MODELS)
+                 if file_name.endswith('.gmm')]
+
+    models = [pickle.load(open(file_name, 'rb')) for file_name in gmm_files]
+    speakers = [file_name.split('\\')[-1].split(".gmm")[0] for file_name in gmm_files]
+    cols = ['file_name', 'scores', 'speaker']
+    df_result = pd.DataFrame(columns=cols)
+
+    file_paths = os.listdir(c.TEST_SET)
+
+    for file_path in file_paths:
+        paths = os.listdir(c.TEST_SET + file_path)
+        for path in paths:
+            sr, audio = read(c.TEST_SET + file_path + '/' + path)
+            vector = ef(audio, sr)
+            log_likelihood = np.zeros(len(models))
+            for i in range(len(models)):
+                gmm = models[i]
+                scores = np.array(gmm.score(vector))
+                log_likelihood[i] = scores.sum()
+
+            winner = np.argmax(log_likelihood) #trained_models/g
+            speaker = speakers[winner].split('/')[-1]
+            # print(f"{path} la {speaker} nói")
+            new_data = [path, scores, speaker]
+            new_df = pd.DataFrame([new_data], columns=cols)
+            df_result = pd.concat([df_result, new_df], ignore_index=True)
+    df_result.to_csv('res/result.csv')
+    print("Sumit successfully!result to save dir res/result.csv")

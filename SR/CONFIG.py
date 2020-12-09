@@ -6,6 +6,7 @@ RATE = 44100
 CHUNK = 512
 RECORD_SECONDS = 10
 DEVICE_INDEX = 0
+epoch=20
 
 # dir
 TRAIN_SET = 'training_set/'
