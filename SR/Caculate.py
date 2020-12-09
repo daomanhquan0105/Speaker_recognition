@@ -28,6 +28,7 @@ def calculate_delta(array):
         deltas[i] = (array[index[0][0]] - array[index[0][1]] + (2 * (array[index[1][0]] - array[index[1][1]]))) / 10
     return deltas
 
+
 def extract_features(audio, rate):
     """
     :param audio: file wav input

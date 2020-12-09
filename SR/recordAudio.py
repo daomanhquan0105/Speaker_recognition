@@ -2,6 +2,7 @@ import os
 import pyaudio
 import CONFIG as c
 import wave
+import time
 
 
 def record_audio(Quantity_file, record_seconds, file_text, dir, test=False):
@@ -56,6 +57,7 @@ def record_audio(Quantity_file, record_seconds, file_text, dir, test=False):
             wavefile.setframerate(c.RATE)
             wavefile.writeframes(b''.join(Record_frames))
             wavefile.close()
+        time.sleep(5)
 
 
 def record_one_file(file_name="test_file.wav"):

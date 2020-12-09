@@ -5,10 +5,11 @@ from Caculate import extract_features as ef
 import numpy as np
 import CONFIG as c
 import time
+import pandas as pd
 from recordAudio import record_audio, record_one_file
 
 
-def test_list_file(quantity_file=2,record=False):
+def test_list_file(quantity_file=2, record=False):
     if record == True:
         record_audio(quantity_file, c.RECORD_SECONDS, c.FILE_NAME_TEST, c.TEST_SET, True)
 
@@ -20,7 +21,8 @@ def test_list_file(quantity_file=2,record=False):
     models = [pickle.load(open(file_name, 'rb')) for file_name in gmm_files]
     speakers = [file_name.split('\\')[-1].split(".gmm")[0] for file_name in gmm_files]
     file_paths = open(c.FILE_NAME_TEST, 'r')
-
+    cols = ['file_name', 'scores', 'speaker']
+    df_result = pd.DataFrame(columns=cols)
     # test_list_file(file_paths, models, speakers)
     for path in file_paths:
         path = path.strip()
@@ -28,7 +30,6 @@ def test_list_file(quantity_file=2,record=False):
         vector = ef(audio, sr)
 
         log_likelihood = np.zeros(len(models))
-        print(len(models))
         for i in range(len(models)):
             gmm = models[i]
             scores = np.array(gmm.score(vector))
@@ -36,8 +37,12 @@ def test_list_file(quantity_file=2,record=False):
 
         winner = np.argmax(log_likelihood)
         speaker = speakers[winner].split('/')[-1]
-        print(f"{path} la {speaker} nói")
-        time.sleep(1)
+        # print(f"{path} la {speaker} nói")
+        new_data = [path, scores, speaker]
+        new_df = pd.DataFrame([new_data], columns=cols)
+        df_result = pd.concat([df_result, new_df], ignore_index=True)
+    df_result.to_csv('res/result.csv')
+    print("Sumit successfully!result to save dir res/result.csv")
 
 
 def test_one_file(file_name="testfile.wav"):

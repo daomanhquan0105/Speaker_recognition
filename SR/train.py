@@ -7,8 +7,9 @@ from sklearn.mixture import GaussianMixture
 from recordAudio import record_audio
 from test import test_list_file
 
+
 def train_model(quantity_file=5, record=True):
-    if record==True:
+    if record == True:
         record_audio(quantity_file, c.RECORD_SECONDS, c.FILE_NAME_TRAIN, c.TRAIN_SET)
 
     print("Bắt đầu training")
@@ -38,7 +39,7 @@ def train_model(quantity_file=5, record=True):
         count += 1
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     train_model(c.QUANTITY_TRAIN_FILE)
     print("trained successfull!")
     test_list_file(c.QUANTITY_TEST_FILE, True)
