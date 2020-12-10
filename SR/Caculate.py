@@ -32,8 +32,8 @@ def calculate_delta(array):
 def extract_features(audio, rate):
     """
     :param audio: file wav input
-    :param rate: learning rate
-    :return: array combine
+    :param rate: learning rate: là một siêu tham số kiểm soát mức độ thay đổi mô hình để đáp ứng với lỗi ước tính mỗi khi trọng số mô hình được cập nhật
+    :return: array combine : là kết hợ 2 mảng với nhau
     """
     mfcc_feature = mfcc.mfcc(audio, rate, 0.025, 0.01, 20, nfft=1200, appendEnergy=True)
     mfcc_feature = preprocessing.scale(mfcc_feature)

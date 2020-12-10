@@ -47,7 +47,15 @@ def test_list_file(quantity_file=2, record=False):
 
 
 def test_one_file(file_name="testfile.wav"):
+    """
+    Chạy file do mình ghi âm
+    :param file_name: Tên file ghi âm
+    :return: void
+    """
     file_path = record_one_file(file_name)
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    engine.setProperty("voice", voices[1].id)
     print("bắt đầu kiểm tra")
     gmm_files = [os.path.join(c.TRAINED_MODELS, file_name) for file_name in os.listdir(c.TRAINED_MODELS)
                  if file_name.endswith('.gmm')]
@@ -69,11 +77,55 @@ def test_one_file(file_name="testfile.wav"):
     winner = np.argmax(log_likelihood)
 
     speaker = speakers[winner].split('/')[-1]
-    time.sleep(1)
+    content = f"{file_name} la {speaker} nói"
+    engine.say(content)
+    engine.runAndWait()
     print(f"{file_name} la {speaker} nói")
 
 
+def test_one_file_dir(file_name):
+    """
+    chạy 1 file bất kỳ từ đường dẫn truyền vào
+    :param file_name:đường dẫn file
+    :return: void
+    """
+    # file_path = record_one_file(file_name)
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    engine.setProperty("voice", voices[1].id)
+    print("bắt đầu kiểm tra")
+    gmm_files = [os.path.join(c.TRAINED_MODELS, file_name) for file_name in os.listdir(c.TRAINED_MODELS)
+                 if file_name.endswith('.gmm')]
+
+    models = [pickle.load(open(file_name, 'rb')) for file_name in gmm_files]
+    speakers = [file_name.split('\\')[-1].split(".gmm")[0] for file_name in gmm_files]
+
+    file_path = file_name.strip()
+    sr, audio = read(file_path)
+    vector = ef(audio, sr)
+
+    log_likelihood = np.zeros(len(models))
+
+    for i in range(len(models)):
+        gmm = models[i]
+        scores = np.array(gmm.score(vector))
+        log_likelihood[i] = scores.sum()
+
+    winner = np.argmax(log_likelihood)
+
+    speaker = speakers[winner].split('/')[-1]
+    content = f"file được truyền vào là {speaker} nói"
+    engine.say(content)
+    engine.runAndWait()
+    print(f"{file_name} la {speaker} nói")
+
+
+
 def test_list_file_from_dir():
+    """
+    lấy tất cả các file từ thư mục config.TEST_SET == 'testing_set'
+    :return:
+    """
     # engine = pyttsx3.init()
     # voices = engine.getProperty('voices')
     # engine.setProperty("voice", voices[1].id)
@@ -84,7 +136,7 @@ def test_list_file_from_dir():
 
     models = [pickle.load(open(file_name, 'rb')) for file_name in gmm_files]
     speakers = [file_name.split('\\')[-1].split(".gmm")[0] for file_name in gmm_files]
-    cols = ['file_name', 'test_speaker', 'scores', 'speaker']
+    cols = ['file_name', 'test_speaker', 'scores', 'speaker','result']
     df_result = pd.DataFrame(columns=cols)
 
     file_paths = os.listdir(c.TEST_SET)
@@ -104,9 +156,13 @@ def test_list_file_from_dir():
             winner = np.argmax(log_likelihood)  # trained_models/g
             speaker = speakers[winner].split('/')[-1]
             test_speaker = path.split('-')[0]
+            if speaker == test_speaker:
+                result=1
+            else: result=0
+
             # content = f"{path} la {speaker} nói"
             # engine.say(content)
-            new_data = [path, test_speaker, scores, speaker]
+            new_data = [path, test_speaker, scores, speaker,result]
             new_df = pd.DataFrame([new_data], columns=cols)
             df_result = pd.concat([df_result, new_df], ignore_index=True)
 
